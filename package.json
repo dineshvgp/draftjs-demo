@@ -9,7 +9,9 @@
     "draft-js": "0.9.1",
     "draft-js-emoji-plugin": "^2.0.0-beta9",
     "draft-js-hashtag-plugin": "^2.0.0-beta9",
+    "draft-js-mention-plugin": "^2.0.0-beta9",
     "draft-js-plugins-editor": "^2.0.0-beta9",
+    "immutable": "^3.8.1",
     "react": "^15.0.0",
     "react-dom": "^15.0.0"
   },

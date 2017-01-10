@@ -4,12 +4,15 @@ import {EditorState, RichUtils} from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createHashtagPlugin from 'draft-js-hashtag-plugin';
 import createEmojiPlugin from 'draft-js-emoji-plugin'
+import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
+import mentions from './mentions';
 
 import BlockStyleControls from './BlockStyleControls.js';
 import InlineStyleControls from './InlineStyleControls';
 
 import 'draft-js-hashtag-plugin/lib/plugin.css';
 import 'draft-js-emoji-plugin/lib/plugin.css';
+import 'draft-js-mention-plugin/lib/plugin.css';
 require("./Draft.css");
 require("./RichEditor.css");
 
@@ -18,9 +21,13 @@ const hashtagPlugin = createHashtagPlugin();
 const emojiPlugin = createEmojiPlugin();
 const { EmojiSuggestions } = emojiPlugin;
 
+const mentionPlugin = createMentionPlugin();
+const { MentionSuggestions } = mentionPlugin;
+
 const plugins = [
   hashtagPlugin,
-  emojiPlugin
+  emojiPlugin,
+  mentionPlugin
 ];
 
 const styleMap = {
@@ -35,13 +42,17 @@ const styleMap = {
 class HelloWorld extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {editorState: EditorState.createEmpty()};
+    this.state = {
+      editorState: EditorState.createEmpty(),
+      suggestions: mentions
+    };
     this.onChange = (editorState) => this.setState({editorState});
     this.focus = () => this.refs.editor.focus();
     this.handleKeyCommand = (command) => this._handleKeyCommand(command);
     this.onTab = (e) => this._onTab(e);
     this.toggleBlockType = (type) => this._toggleBlockType(type);
     this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
+    this.onSearchChange = (value) => this._onSearchChange(value);
   }
 
   _handleKeyCommand(command) {
@@ -84,6 +95,12 @@ class HelloWorld extends React.Component {
     );
   }
 
+  _onSearchChange = ({ value }) => {
+    this.setState({
+      suggestions: defaultSuggestionsFilter(value, mentions),
+    });
+  };
+
   render() {
     const {editorState} = this.state
 
@@ -121,6 +138,10 @@ class HelloWorld extends React.Component {
             plugins={plugins}
             onChange={this.onChange} />
           <EmojiSuggestions />
+          <MentionSuggestions
+            onSearchChange={this.onSearchChange}
+            suggestions={this.state.suggestions}
+          />
         </div>
       </div>
     );
