@@ -1,9 +1,18 @@
 import React from 'react';
-import {Editor, EditorState, RichUtils} from 'draft-js';
+import {EditorState, RichUtils} from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import createHashtagPlugin from 'draft-js-hashtag-plugin';
 import BlockStyleControls from './BlockStyleControls.js';
 import InlineStyleControls from './InlineStyleControls';
+import 'draft-js-hashtag-plugin/lib/plugin.css';
+import hashtagStyles from './hashtagStyles.css';
 require("./Draft.css");
 require("./RichEditor.css");
+
+const hashtagPlugin = createHashtagPlugin();
+const plugins = [
+  hashtagPlugin
+];
 
 const styleMap = {
   CODE: {
@@ -100,6 +109,7 @@ class HelloWorld extends React.Component {
             handleKeyCommand={this.handleKeyCommand}
             onTab={this.onTab}
             spellCheck={true}
+            plugins={plugins}
             onChange={this.onChange} />
         </div>
       </div>
