@@ -1,0 +1,10 @@
+.send-button {
+  float: right;
+  margin-top: 3px;
+}
+
+.balance-count {
+  float: right;
+  margin-top: 3px;
+  margin-right: 3px;
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'reactstrap';
 import {EditorState, RichUtils} from 'draft-js';
 
 import Editor from 'draft-js-plugins-editor';
@@ -13,8 +14,9 @@ import InlineStyleControls from './InlineStyleControls';
 import 'draft-js-hashtag-plugin/lib/plugin.css';
 import 'draft-js-emoji-plugin/lib/plugin.css';
 import 'draft-js-mention-plugin/lib/plugin.css';
-require("./Draft.css");
-require("./RichEditor.css");
+import "./Draft.css";
+import "./RichEditor.css";
+import './style.css';
 
 const hashtagPlugin = createHashtagPlugin();
 
@@ -23,12 +25,6 @@ const { EmojiSuggestions } = emojiPlugin;
 
 const mentionPlugin = createMentionPlugin();
 const { MentionSuggestions } = mentionPlugin;
-
-const plugins = [
-  hashtagPlugin,
-  emojiPlugin,
-  mentionPlugin
-];
 
 const styleMap = {
   CODE: {
@@ -103,6 +99,19 @@ class HelloWorld extends React.Component {
 
   render() {
     const {editorState} = this.state
+    const {showCount, socialType, responseCount} = this.props
+
+    const plugins = [emojiPlugin]
+    if(socialType === 'twitter') {
+      plugins.push(hashtagPlugin, mentionPlugin);
+    }
+
+    let balanceCount = 0
+    if(showCount) {
+      balanceCount = responseCount - editorState.getCurrentContent().getPlainText().length
+    }
+
+    const opts = (balanceCount < 0) ? {disabled: 'true'} : {}
 
     // If the user changes block type before entering any text, we can
     // either style the placeholder or hide it. Let's just hide it now.
@@ -110,39 +119,45 @@ class HelloWorld extends React.Component {
     var contentState = editorState.getCurrentContent();
     if (!contentState.hasText()) {
       if (contentState.getBlockMap().first().getType() !== 'unstyled') {
-        console.log('sdfds');
         className += ' RichEditor-hidePlaceholder';
       }
     }
 
     return (
-      <div className='RichEditor-root'>
-         <BlockStyleControls
-          editorState={editorState}
-          onToggle={this.toggleBlockType}
-          />
-        <InlineStyleControls
-          editorState={editorState}
-          onToggle={this.toggleInlineStyle}
-          />
-        <div className={className} onClick={this.focus}>
-          <Editor
-            blockStyleFn={this.getBlockStyle}
-            customStyleMap={styleMap}
-            placeholder="Write a tweet..."
+      <div>
+        <div className='RichEditor-root'>
+           <BlockStyleControls
             editorState={editorState}
-            ref="editor"
-            handleKeyCommand={this.handleKeyCommand}
-            onTab={this.onTab}
-            spellCheck={true}
-            plugins={plugins}
-            onChange={this.onChange} />
-          <EmojiSuggestions />
-          <MentionSuggestions
-            onSearchChange={this.onSearchChange}
-            suggestions={this.state.suggestions}
-          />
+            onToggle={this.toggleBlockType}
+            />
+          <InlineStyleControls
+            editorState={editorState}
+            onToggle={this.toggleInlineStyle}
+            />
+          <div className={className} onClick={this.focus}>
+            <Editor
+              blockStyleFn={this.getBlockStyle}
+              customStyleMap={styleMap}
+              placeholder="Write a tweet..."
+              editorState={editorState}
+              ref="editor"
+              handleKeyCommand={this.handleKeyCommand}
+              onTab={this.onTab}
+              spellCheck={true}
+              plugins={plugins}
+              onChange={this.onChange} />
+            <EmojiSuggestions />
+            <MentionSuggestions
+              onSearchChange={this.onSearchChange}
+              suggestions={this.state.suggestions}
+            />
+          </div>
         </div>
+        <Button className='send-button' color="primary" {...opts}> Send </Button>
+        {
+          showCount &&
+          <div className='balance-count'> {balanceCount} </div>
+        }
       </div>
     );
   }
