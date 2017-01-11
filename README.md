@@ -1,4 +1,4 @@
-# WebpackBin project
+# Draft.js Demo
 
 ## Start
 
@@ -7,3 +7,6 @@
 `npm start`
 
 Go to `localhost:8080`
+
+
+Note: Experimenting draft.js for my own needs 
