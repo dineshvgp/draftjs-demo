@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Project boilerplate",
   "scripts": {
-    "start": "webpack-dev-server --content-base build/"
+    "start": "webpack-dev-server --content-base build/",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "draft-js": "0.9.1",
@@ -27,7 +29,8 @@
     "babel-preset-react": "6.5.0",
     "babel-preset-stage-0": "6.5.0",
     "css-loader": "0.23.1",
-    "style-loader": "0.13.0"
+    "style-loader": "0.13.0",
+    "@kadira/storybook": "^2.21.0"
   },
   "author": "WebpackBin",
   "license": "ISC"
