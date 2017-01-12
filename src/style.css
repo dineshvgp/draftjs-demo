@@ -8,3 +8,12 @@
   margin-top: 3px;
   margin-right: 3px;
 }
+
+.hidden {
+  display: none;
+}
+
+.image-upload {
+  font-size: x-large;
+  cursor: pointer;
+}

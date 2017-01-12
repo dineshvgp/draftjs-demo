@@ -6,7 +6,10 @@ import Editor from 'draft-js-plugins-editor';
 import createHashtagPlugin from 'draft-js-hashtag-plugin';
 import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
+import createImagePlugin from 'draft-js-image-plugin';
 import mentions from './mentions';
+import ImageAdd from './ImageAdd';
+import ImageUpload from './ImageUpload';
 
 import BlockStyleControls from './BlockStyleControls.js';
 import InlineStyleControls from './InlineStyleControls';
@@ -14,6 +17,7 @@ import InlineStyleControls from './InlineStyleControls';
 import 'draft-js-hashtag-plugin/lib/plugin.css';
 import 'draft-js-emoji-plugin/lib/plugin.css';
 import 'draft-js-mention-plugin/lib/plugin.css';
+import 'draft-js-image-plugin/lib/plugin.css';
 import "./Draft.css";
 import "./RichEditor.css";
 import './style.css';
@@ -25,6 +29,8 @@ const { EmojiSuggestions } = emojiPlugin;
 
 const mentionPlugin = createMentionPlugin();
 const { MentionSuggestions } = mentionPlugin;
+
+const imagePlugin = createImagePlugin();
 
 const styleMap = {
   CODE: {
@@ -101,7 +107,7 @@ class HelloWorld extends React.Component {
     const {editorState} = this.state
     const {showCount, socialType, responseCount} = this.props
 
-    const plugins = [emojiPlugin]
+    const plugins = [emojiPlugin, imagePlugin]
     if(socialType === 'twitter') {
       plugins.push(hashtagPlugin, mentionPlugin);
     }
@@ -158,6 +164,11 @@ class HelloWorld extends React.Component {
           showCount &&
           <div className='balance-count'> {balanceCount} </div>
         }
+        <ImageUpload
+          editorState={editorState}
+          onChange={this.onChange}
+          modifier={imagePlugin.addImage}
+        />
       </div>
     );
   }
