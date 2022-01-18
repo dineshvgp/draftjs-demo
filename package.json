@@ -8,17 +8,17 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "draft-js": "0.9.1",
+    "draft-js": "0.11.7",
     "draft-js-emoji-plugin": "^2.0.0-beta9",
     "draft-js-hashtag-plugin": "^2.0.0-beta9",
     "draft-js-image-plugin": "^2.0.0-beta9",
     "draft-js-mention-plugin": "^2.0.0-beta9",
     "draft-js-plugins-editor": "^2.0.0-beta9",
     "immutable": "^3.8.1",
-    "react": "^15.0.0",
+    "react": "^16.5.0",
     "react-addons-css-transition-group": "^15.4.2",
     "react-addons-transition-group": "^15.4.2",
-    "react-dom": "^15.0.0",
+    "react-dom": "^16.5.0",
     "reactstrap": "^4.0.1"
   },
   "devDependencies": {
